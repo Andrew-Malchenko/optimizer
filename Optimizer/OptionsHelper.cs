@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Optimizer {
         internal static Color TextColor;
 
         internal readonly static string SettingsFile = CoreHelper.CoreFolder + "\\Optimizer.json";
+
+        internal static Dictionary<string, string> SettingsFiles = new Dictionary<string, string>();
 
         internal static Options CurrentOptions = new Options();
 
@@ -92,6 +95,113 @@ namespace Optimizer {
                     serializer.Serialize(jw, CurrentOptions);
                 }
             }
+        }
+
+        internal static void CreateNewProfile(string name)
+        {
+            SettingsFiles.Add(name, CoreHelper.CoreFolder + "\\Optimizer_" + name + ".json");
+            using (FileStream fs = File.Open(SettingsFiles[name], FileMode.CreateNew))
+            using (StreamWriter sw = new StreamWriter(fs))
+            using (JsonWriter jw = new JsonTextWriter(sw))
+            {
+                jw.Formatting = Formatting.Indented;
+
+                JsonSerializer serializer = new JsonSerializer();
+                serializer.Serialize(jw, CurrentOptions);
+            }
+        }
+
+        internal static void ResetSettings()
+        {
+            CurrentOptions.Theme = Color.FromArgb(153, 102, 204);
+            CurrentOptions.AppsFolder = string.Empty;
+            CurrentOptions.EnableTray = false;
+            CurrentOptions.AutoStart = false;
+            CurrentOptions.InternalDNS = Constants.INTERNAL_DNS;
+            CurrentOptions.UpdateOnLaunch = true;
+
+            CurrentOptions.DisableIndicium = false;
+            CurrentOptions.DisableAppsTool = false;
+            CurrentOptions.DisableHostsEditor = false;
+            CurrentOptions.DisableUWPApps = false;
+            CurrentOptions.DisableStartupTool = false;
+            CurrentOptions.DisableCleaner = false;
+            CurrentOptions.DisableIntegrator = false;
+            CurrentOptions.DisablePinger = false;
+
+            //CurrentOptions.TelemetryClientID = Guid.NewGuid().ToString().ToUpperInvariant();
+            //CurrentOptions.DisableOptimizerTelemetry = false;
+
+            CurrentOptions.LanguageCode = LanguageCode.EN;
+
+            CurrentOptions.EnablePerformanceTweaks = false;
+            CurrentOptions.DisableNetworkThrottling = false;
+            CurrentOptions.DisableWindowsDefender = false;
+            CurrentOptions.DisableSystemRestore = false;
+            CurrentOptions.DisablePrintService = false;
+            CurrentOptions.DisableMediaPlayerSharing = false;
+            CurrentOptions.DisableErrorReporting = false;
+            CurrentOptions.DisableHomeGroup = false;
+            CurrentOptions.DisableSuperfetch = false;
+            CurrentOptions.DisableTelemetryTasks = false;
+            CurrentOptions.DisableOffice2016Telemetry = false;
+            CurrentOptions.DisableCompatibilityAssistant = false;
+            CurrentOptions.DisableFaxService = false;
+            CurrentOptions.DisableSmartScreen = false;
+            CurrentOptions.DisableStickyKeys = false;
+            CurrentOptions.EnableGamingMode = false;
+            CurrentOptions.EnableLegacyVolumeSlider = false;
+            CurrentOptions.DisableQuickAccessHistory = false;
+            CurrentOptions.DisableStartMenuAds = false;
+            CurrentOptions.UninstallOneDrive = false;
+            CurrentOptions.DisableMyPeople = false;
+            CurrentOptions.DisableAutomaticUpdates = false;
+            CurrentOptions.ExcludeDrivers = false;
+            CurrentOptions.DisableTelemetryServices = false;
+            CurrentOptions.DisablePrivacyOptions = false;
+            CurrentOptions.DisableCortana = false;
+            CurrentOptions.DisableSensorServices = false;
+            CurrentOptions.DisableWindowsInk = false;
+            CurrentOptions.DisableSpellingTyping = false;
+            CurrentOptions.DisableXboxLive = false;
+            CurrentOptions.DisableGameBar = false;
+            CurrentOptions.DisableInsiderService = false;
+            CurrentOptions.DisableStoreUpdates = false;
+            CurrentOptions.DisableCloudClipboard = false;
+            CurrentOptions.EnableLongPaths = false;
+            CurrentOptions.RemoveCastToDevice = false;
+            CurrentOptions.DisableHibernation = false;
+            CurrentOptions.DisableSMB1 = false;
+            CurrentOptions.DisableSMB2 = false;
+            CurrentOptions.DisableNTFSTimeStamp = false;
+            CurrentOptions.DisableSearch = false;
+            CurrentOptions.RestoreClassicPhotoViewer = false;
+
+            CurrentOptions.DisableVisualStudioTelemetry = false;
+            CurrentOptions.DisableFirefoxTemeletry = false;
+            CurrentOptions.DisableChromeTelemetry = false;
+            CurrentOptions.DisableNVIDIATelemetry = false;
+
+            CurrentOptions.DisableEdgeDiscoverBar = false;
+            CurrentOptions.DisableEdgeTelemetry = false;
+
+            CurrentOptions.DisableOneDrive = false;
+
+            CurrentOptions.TaskbarToLeft = false;
+            CurrentOptions.DisableSnapAssist = false;
+            CurrentOptions.DisableWidgets = false;
+            CurrentOptions.DisableChat = false;
+            CurrentOptions.ClassicMenu = false;
+            CurrentOptions.DisableTPMCheck = false;
+            CurrentOptions.CompactMode = false;
+            CurrentOptions.DisableStickers = false;
+            CurrentOptions.DisableVBS = false;
+            CurrentOptions.DisableCoPilotAI = false;
+
+            CurrentOptions.DisableHPET = false;
+            CurrentOptions.EnableLoginVerbose = false;
+
+            SaveSettings();
         }
 
         internal static void LoadSettings() {

@@ -722,6 +722,11 @@ namespace Optimizer {
                 Constants.VIETNAMESE
             });
 
+            boxProfile.Items.AddRange(new string[]
+            {
+                "default"
+            });
+
             _splashForm.LoadingStatus.Text = "checking for requirements";
 
             // override tool launch configurations
@@ -4212,6 +4217,21 @@ namespace Optimizer {
 
         private void linkLabel7_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             Process.Start(_faqSectionLink);
+        }
+
+        private void reset_settings_Click(object sender, EventArgs e)
+        {
+            OptionsHelper.ResetSettings();
+            OptionsHelper.ApplyTheme(this);
+
+            OptionsHelper.LoadTranslation();
+            Translate();
+        }
+
+        private void add_profile_Click(object sender, EventArgs e)
+        {
+            OptionsHelper.CreateNewProfile(textBox1.Text);
+            boxProfile.Items.Add(textBox1.Text);
         }
     }
 }
